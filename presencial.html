@@ -41,12 +41,12 @@
     .user-dropdown a:hover,.user-dropdown button:hover{background:var(--cream);color:var(--burg)}
     .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:.5rem;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     .hamburger span{display:block;width:22px;height:1.5px;background:var(--burg)}
-    .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:var(--cream);z-index:9999;overflow-y:auto;padding:2rem;-webkit-overflow-scrolling:touch}
-    .mobile-menu.open{display:block}
+    .mobile-menu{position:fixed;top:64px;left:0;right:0;bottom:0;background:var(--cream);z-index:9999;overflow-y:auto;padding:2rem;-webkit-overflow-scrolling:touch}
+    
     .mobile-nav-item{border-bottom:1px solid var(--cream-dark)}
     .mobile-nav-link{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-decoration:none;cursor:pointer;background:none;border:none;width:100%}
-    .mobile-sub{display:none;padding-left:1rem}
-    .mobile-sub.open{display:block}
+    .mobile-sub{padding-left:1rem}
+    
     .mobile-sub a{display:block;padding:.7rem 0;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);text-decoration:none}
 
     .pres-hero{padding-top:64px;position:relative;height:55vh;min-height:380px;display:flex;align-items:center;overflow:hidden}
@@ -143,6 +143,18 @@
       .footer-grid{grid-template-columns:1fr}
     }
   </style>
+<script>
+function toggleMenu(){
+  var m=document.getElementById('mobileMenu');
+  if(!m) return;
+  m.style.display=(m.style.display==='block')?'none':'block';
+}
+function toggleMobileSub(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.style.display=(el.style.display==='block')?'none':'block';
+}
+</script>
 </head>
 <body>
 
@@ -195,15 +207,15 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       <span class="cart-count" id="cartCount">0</span>
     </button>
-    <button class="hamburger" id="hamburgerBtn" type="button"><span></span><span></span><span></span></button>
+    <button class="hamburger" type="button" onclick="toggleMenu()" style="touch-action:manipulation"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
+<div class="mobile-menu" id="mobileMenu" style="display:none">
   <div class="mobile-nav-item"><a href="presencial.html" class="mobile-nav-link">Servicios Presenciales</a></div>
   <div class="mobile-nav-item">
     <button class="mobile-nav-link" onclick="toggleMobileSub('sub-press')">Press On <span>+</span></button>
-    <div class="mobile-sub" id="sub-press">
+    <div class="mobile-sub" id="sub-press" style="display:none">
       <a href="personalizadas.html">Personalizadas</a>
       <a href="tienda.html">Tienda</a>
       <a href="guia-talles.html">Guía de Talles</a>
@@ -212,14 +224,14 @@
   <div class="mobile-nav-item"><a href="guia-talles.html" class="mobile-nav-link">Guía de Talles</a></div>
   <div class="mobile-nav-item">
     <button class="mobile-nav-link" onclick="toggleMobileSub('sub-nos')">Nosotras <span>+</span></button>
-    <div class="mobile-sub" id="sub-nos">
+    <div class="mobile-sub" id="sub-nos" style="display:none">
       <a href="nosotras.html">Sobre Nosotras</a>
       <a href="contacto.html">Contactanos</a>
     </div>
   </div>
   <div class="mobile-nav-item">
     <button class="mobile-nav-link" onclick="toggleMobileSub('sub-ayuda')">Ayuda <span>+</span></button>
-    <div class="mobile-sub" id="sub-ayuda">
+    <div class="mobile-sub" id="sub-ayuda" style="display:none">
       <a href="ayuda.html#medios-pago">Medios de Pago</a>
       <a href="ayuda.html#envios">Información de Envíos</a>
       <a href="ayuda.html#faq">Preguntas Frecuentes</a>
@@ -476,16 +488,7 @@ document.getElementById('checkoutBtn').addEventListener('click',()=>{
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   window.open(`https://wa.me/${WA}?text=💅 Hola! Quiero hacer un pedido:%0A%0A${items}%0A%0A*Total: ${formatPrice(total)}*`,'_blank');
 });
-document.getElementById('hamburgerBtn').addEventListener('click', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  var menu = document.getElementById('mobileMenu');
-  if(menu.classList.contains('open')) {
-    menu.classList.remove('open');
-  } else {
-    menu.classList.add('open');
-  }
-});
+
 }
 
 const carStates = {};
@@ -539,6 +542,7 @@ async function logout(){
 }
 updateCartUI();
 checkSession();
+
 </script>
 </body>
 </html>
